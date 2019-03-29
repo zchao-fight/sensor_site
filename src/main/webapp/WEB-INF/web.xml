@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
+    <display-name>Archetype Created Web Application</display-name>
+    <!-- Spring和mybatis的配置文件 上下文配置 -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring-mybatis.xml<!--, classpath:spring-shiro.xml--></param-value>
+    </context-param>
+
+
+   <!-- &lt;!&ndash;shiro的filter&ndash;&gt;
+    &lt;!&ndash;shiro过滤器，DelegatingFilterProxy通过代理模式将spring容器中的bean和filter管理起来&ndash;&gt;
+    <filter>
+        <filter-name>shiroFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        &lt;!&ndash;设置true由servlet容器控制filter的生命周期&ndash;&gt;
+        <init-param>
+            <param-name>targetFilterLifecycle</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        &lt;!&ndash;设置spring容器filter的bean id，如果不设置则找与filter-name一致的bean&ndash;&gt;
+        <init-param>
+            <param-name>targetBeanName</param-name>
+            <param-value>shiroFilter</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>shiroFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>-->
+
+    <!-- 编码过滤器 -->
+    <!-- 可以解决post请求乱码 -->
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <async-supported>true</async-supported>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!-- Spring监听器 -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <!-- 防止Spring内存溢出监听器 -->
+    <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+    </listener>
+
+    <!-- Spring MVC servlet -->
+    <!-- @author:zc 前端控制器 -->
+    <servlet>
+        <servlet-name>SpringMVC</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring-mvc.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+        <async-supported>true</async-supported>
+    </servlet>
+
+    <!--<servlet-mapping>
+      <servlet-name>SpringMVC</servlet-name>
+      &lt;!&ndash; 此处可以可以配置成*.do，对应struts的后缀习惯 &ndash;&gt;
+      <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+      <servlet-name>SpringMVC</servlet-name>
+      &lt;!&ndash; 此处可以可以配置成*.do，对应struts的后缀习惯 &ndash;&gt;
+      <url-pattern>*.action</url-pattern>
+    </servlet-mapping>-->
+    <servlet-mapping>
+        <servlet-name>SpringMVC</servlet-name>
+        <url-pattern>*.action</url-pattern>
+    </servlet-mapping>
+
+    <!--配置与否都可以，因为jsp会在当前目录的\WEB-INF下找所有tld文件，确认这个URL对应哪个TLD文件-->
+    <jsp-config>
+        <taglib>
+            <taglib-uri>http://ccf.cn/common</taglib-uri>
+            <taglib-location>WEB-INF/tld/common.tld</taglib-location>
+        </taglib>
+    </jsp-config>
+
+
+    <welcome-file-list>
+        <welcome-file>/index.action</welcome-file>
+    </welcome-file-list>
+</web-app>
