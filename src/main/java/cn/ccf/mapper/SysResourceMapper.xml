@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.ccf.mapper.SysResourceMapper">
+
+    <!--根据用户id查询菜单-->
+    <select id="findMenuListByUserId" parameterType="int" resultType="cn.ccf.pojo.SysResource">
+        SELECT *
+        FROM sys_resource
+        WHERE type = 0 AND id IN (
+            SELECT res_id
+            FROM sys_role_resource
+            WHERE role_id IN (
+
+                SELECT role_id
+                FROM sys_user_role
+                WHERE user_id = #{userId}
+            ))
+    </select>
+    <select id="findPermissionListByUserId" resultType="cn.ccf.pojo.SysResource">
+        SELECT *
+        FROM sys_resource
+        WHERE type = 1 AND id IN (
+            SELECT res_id
+            FROM sys_role_resource
+            WHERE role_id IN (
+
+                SELECT role_id
+                FROM sys_user_role
+                WHERE user_id = #{userId}
+            ))
+    </select>
+    <select id="findAllPermissions" resultType="cn.ccf.pojo.TreeObjectVO">
+        SELECT * FROM sys_resource
+    </select>
+    <select id="findResourceByRoleId" resultType="cn.ccf.pojo.SysResource">
+        SELECT * FROM sys_resource WHERE id IN (
+            SELECT res_id FROM sys_role_resource
+            WHERE role_id = #{roleId}
+        )
+    </select>
+</mapper>
