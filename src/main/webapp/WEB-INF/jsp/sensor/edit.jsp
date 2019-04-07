@@ -11,6 +11,7 @@
     <script type="text/javascript" src="${ctx}/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="${ctx}/js/layer/layer.js"></script>
     <script type="text/javascript" src="${ctx}/js/common.js"></script>
+    <script type="text/javascript" src="${ctx}/js/sensor.js"></script>
     <link rel="stylesheet" href="${ctx}/css/bootstrap.min.css">
     <style type="text/css">
         .col-sm-3 {
@@ -123,28 +124,18 @@
 
         </div>
         <footer class="panel-footer text-right bg-light lter">
-            <button type="submit" class="btn btn-success btn-s-xs" onclick="editSensor()">提交</button>
+            <button type="button" class="btn btn-success btn-s-xs" onclick="editSensor()">提交</button>
         </footer>
     </section>
 </form>
 <script type="text/javascript">
 
     function editSensor() {
-
-        $.ajax({
-            type: "post",
-            url: "${ctx}/sensor/editSensor.action",
-            data: $("#form").serialize(),
-            statusCode: {
-                200: function () {
-                    parent.layer.alert("修改成功", function () {
-                        window.parent.location.reload();
-                    });
-                },
-                500: function () {
-                    alert("修改失败");
-                }
-            }
+        sensor.ajax('${ctx}/sensor/editSensor.action', 'post', $("#form").serializeJson(), function (data) {
+            setTimeout(function () {
+                window.parent.location.reload();
+            }, 2000);
+            sensor.succMsg("更新成功");
         });
     }
 

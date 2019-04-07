@@ -37,6 +37,10 @@ public class ResponseCodeConst {
 
     protected String msg;
 
+    public boolean isSuccess() {
+        return success;
+    }
+
     protected boolean success;
 
     public ResponseCodeConst() {

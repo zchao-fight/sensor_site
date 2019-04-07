@@ -1,16 +1,20 @@
 package cn.ccf.controller;
 
+import cn.ccf.common.ResponseCodeConst;
+import cn.ccf.common.ResponseDTO;
 import cn.ccf.pojo.Sensor;
 import cn.ccf.service.SensorService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -42,18 +46,15 @@ public class SensorController {
 
     @RequestMapping("/sensor/addSensor")
     @ResponseBody
-    public ResponseEntity<Void> addSensor(Sensor sensor) {
-        String sensorNumber = sensor.getSensorNumber();
-        if (StringUtils.isNotEmpty(sensorNumber)) {
-            Sensor temp = sensorService.queryBySensorNumber(sensorNumber);
-            if (temp == null) {
-                sensorService.insert(sensor);
-                return ResponseEntity.status(HttpStatus.CREATED).build();
-            }
+    public ResponseDTO<Sensor> addSensor(@Valid @RequestBody Sensor sensor) {
+
+        Sensor temp = sensorService.queryBySensorNumber(sensor.getSensorNumber());
+
+        if (temp == null) {
+            sensorService.insert(sensor);
+            return ResponseDTO.succ(sensor);
         }
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-
+        return ResponseDTO.wrap(ResponseCodeConst.ERROR_PARAM);
     }
 
     @RequestMapping("/sensor/deleteSensor")
@@ -76,20 +77,19 @@ public class SensorController {
 
     @RequestMapping("/sensor/editSensor")
     @ResponseBody
-    public ResponseEntity<Void>  editSensor(Sensor sensor, String originSensorNumber) {
-        String sensorNumber = sensor.getSensorNumber();
-        if (StringUtils.isNotEmpty(sensorNumber)) {
-            if (StringUtils.equals(sensorNumber, originSensorNumber)) {
-                sensorService.updateSelective(sensor);
-                return ResponseEntity.status(HttpStatus.OK).build();
-            }
-            Sensor temp = sensorService.queryBySensorNumber(sensorNumber);
-            if (temp == null) {
-                sensorService.updateSelective(sensor);
-                return ResponseEntity.status(HttpStatus.OK).build();
-            }
-        }
+    public ResponseDTO<Sensor> editSensor(@RequestBody @Valid Sensor sensor) {
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        Sensor temp = sensorService.queryBySensorNumber(sensor.getSensorNumber());
+
+        if (temp == null) {
+            sensorService.updateSelective(sensor);
+            return ResponseDTO.succ(sensor);
+        } else {
+            if (StringUtils.equals(temp.getId(), sensor.getId())) {
+                sensorService.updateSelective(sensor);
+                return ResponseDTO.succ(sensor);
+            }
+            return ResponseDTO.wrap(ResponseCodeConst.ERROR_PARAM);
+        }
     }
 }

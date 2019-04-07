@@ -11,6 +11,7 @@
     <script type="text/javascript" src="${ctx}/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="${ctx}/js/layer/layer.js"></script>
     <script type="text/javascript" src="${ctx}/js/common.js"></script>
+    <script type="text/javascript" src="${ctx}/js/sensor.js"></script>
     <link rel="stylesheet" href="${ctx}/css/bootstrap.min.css">
     <style type="text/css">
         .col-sm-3 {
@@ -103,34 +104,56 @@
 
         </div>
         <footer class="panel-footer text-right bg-light lter">
-            <button type="submit" class="btn btn-success btn-s-xs" onclick="addUser()">提交</button>
+            <button type="button" class="btn btn-success btn-s-xs" onclick="addUser()">提交</button>
         </footer>
     </section>
 </form>
 <script type="text/javascript">
 
+    window.onbeforeunload = function() {
+        return "确认离开当前页面吗？未保存的数据将会丢失";
+    };
+
+
     function addUser() {
 
-        var layerIndex = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-        parent.layer.close(layerIndex); //再执行关闭
-        window.parent.location.href = window.parent.location.href;
+//        var layerIndex = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+//        parent.layer.close(layerIndex); //再执行关闭
+//        window.parent.location.href = window.parent.location.href;
+            var formObject = {};
+            var formArray =$("#form").serializeArray();
+            $.each(formArray,function(i,item){
+                formObject[item.name] = item.value;
+            });
 
-        $.ajax({
-            type: "post",
-            ajax: false,
-            url: "${ctx}/sensor/addSensor.action",
-            data: $("#form").serialize(),
-            statusCode: {
-                201: function () {
-
-                    alert("添加成功");
-
-                },
-                500: function () {
-                    alert("添加失败");
-                }
-            }
+        sensor.ajax("${ctx}/sensor/addSensor.action", "post", formObject, function (data) {
+            setTimeout(function(){
+                window.onbeforeunload = null;
+                window.parent.location.reload();
+            },2000);
+            sensor.succMsg('保存成功!')
         });
+
+        <%--$.ajax({--%>
+            <%--type: "post",--%>
+            <%--ajax: false,--%>
+            <%--url: "${ctx}/sensor/addSensor.action",--%>
+            <%--data: $("#form").serialize(),--%>
+            <%--statusCode: {--%>
+                <%--201: function () {--%>
+                    <%--layer.msg("添加成功", {time: 2300, icon:6, shade: [0.2, '#000'],shadeClose :true}, function () {--%>
+                        <%--window.parent.location.href = window.parent.location.href;--%>
+
+                    <%--});--%>
+                <%--},--%>
+                <%--200: function (data) {--%>
+                    <%--parent.layer.msg(data.msg, {icon: 6})--%>
+                <%--},--%>
+                <%--500: function () {--%>
+                    <%--alert("添加失败");--%>
+                <%--}--%>
+            <%--}--%>
+        <%--});--%>
     }
 
 

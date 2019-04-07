@@ -116,17 +116,15 @@
             },
             statusCode : {
                 200 : function () {
-                    alert("删除成功");
-                    layer.alert("删除成功", function () {
+                    layer.msg("删除成功", {icon : 6}, function () {
                         location.reload();
                     })
                 },
                 500 : function () {
-                    alert("删除失败");
+                    layer.msg("删除成功", {icon : 5});
                 }
             }
         });
-        window.location.href = window.location.href;
     }
 
     function editSensor(id) {

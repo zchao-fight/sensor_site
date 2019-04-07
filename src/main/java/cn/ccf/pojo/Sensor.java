@@ -1,12 +1,17 @@
 package cn.ccf.pojo;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 public class Sensor {
     private String id;
 
+
+    @NotBlank(message = "名称不能为空")
     private String name;
 
     private String type;
 
+    @NotBlank(message = "编号不能为空")
     private String sensorNumber;
 
     private String serialNumber;
