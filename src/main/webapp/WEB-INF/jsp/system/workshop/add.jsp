@@ -11,6 +11,7 @@
     <script type="text/javascript" src="${ctx}/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="${ctx}/js/layer/layer.js"></script>
     <script type="text/javascript" src="${ctx}/js/common.js"></script>
+    <script type="text/javascript" src="${ctx}/js/sensor.js"></script>
     <link rel="stylesheet" href="${ctx}/css/bootstrap.min.css">
     <style type="text/css">
         .col-sm-3 {
@@ -56,14 +57,14 @@
                 <label class="col-sm-3 control-label">位置</label>
                 <div class="col-sm-9">
                     <input type="text" class="form-control checkacc"
-                           name="location" id="location" >
+                           name="location" id="location">
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label">定员</label>
                 <div class="col-sm-9">
                     <input type="text" class="form-control checkacc"
-                           name="personnelQuota" id="personnelQuota" >
+                           name="personnelQuota" id="personnelQuota">
                 </div>
             </div>
 
@@ -72,36 +73,27 @@
                 <label class="col-sm-3 control-label">ip</label>
                 <div class="col-sm-9">
                     <input type="text" class="form-control checkacc"
-                           name="ip" id="ip" >
+                           name="ip" id="ip">
                 </div>
             </div>
         </div>
         <footer class="panel-footer text-right bg-light lter">
-            <button type="submit" class="btn btn-success btn-s-xs" onclick="addWorkshop()">提交</button>
+            <button type="button" class="btn btn-success btn-s-xs" onclick="addWorkshop()">提交</button>
         </footer>
     </section>
 </form>
 <script type="text/javascript">
 
     function addWorkshop() {
-        $.ajax({
-            type : "post",
-            url : "${ctx}/workshop/addWorkshop.action",
-            data : $("#form").serialize(),
-            statusCode : {
-                201 : function () {
-                    alert("添加成功");
 
-                },
-                500 : function () {
-                    alert("添加失败");
-                }
-            }
+        sensor.post("${ctx}/workshop/addWorkshop.action", $("#form").serialize(), function () {
+            setTimeout(function () {
+                parent.window.location.reload();
+            }, 2000);
+            sensor.succMsg("添加成功");
+        },function () {
+            sensor.errorMsg("添加失败")
         });
-        var layerIndex = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-        parent.layer.close(layerIndex); //再执行关闭
-        window.parent.location.href = window.parent.location.href;
-
     }
 
 

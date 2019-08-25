@@ -16,6 +16,6 @@ public class SensorRealTimeValue {
 
     private String unit;
 
-    private Date updateTime;
+    private String updateTime;
 
 }

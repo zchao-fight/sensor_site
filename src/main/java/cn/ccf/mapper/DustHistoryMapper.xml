@@ -6,7 +6,7 @@
     <result column="SENSOR_NUM" property="sensorNum" jdbcType="VARCHAR" />
     <result column="NUM" property="num" jdbcType="VARCHAR" />
     <result column="UNIT" property="unit" jdbcType="VARCHAR" />
-    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -103,7 +103,7 @@
     insert into DUST_HISTORY (ID, SENSOR_NUM, NUM, 
       UNIT, CREATE_TIME)
     values (#{id,jdbcType=VARCHAR}, #{sensorNum,jdbcType=VARCHAR}, #{num,jdbcType=VARCHAR}, 
-      #{unit,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+      #{unit,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.ccf.pojo.DustHistory" >
     insert into DUST_HISTORY
@@ -138,20 +138,21 @@
         #{unit,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
+        #{createTime,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
     <insert id="batchInsert">
         insert into dust_history (ID, SENSOR_NUM, NUM,
         UNIT, CREATE_TIME)
-        VALUES
-        <foreach collection="list" item="item" separator=",">
-            (#{item.id},
+        <foreach collection="list" item="item" separator="union all">
+            (SELECT
+            #{item.id},
             #{item.sensorNum},
             #{item.num},
             #{item.unit},
-            #{item.createTime})
+            #{item.createTime}
+            from DUAL)
         </foreach>
     </insert>
     <select id="countByExample" parameterType="cn.ccf.pojo.DustHistoryExample" resultType="java.lang.Integer" >
@@ -176,7 +177,7 @@
         UNIT = #{record.unit,jdbcType=VARCHAR},
       </if>
       <if test="record.createTime != null" >
-        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+        CREATE_TIME = #{record.createTime,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -189,7 +190,7 @@
       SENSOR_NUM = #{record.sensorNum,jdbcType=VARCHAR},
       NUM = #{record.num,jdbcType=VARCHAR},
       UNIT = #{record.unit,jdbcType=VARCHAR},
-      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP}
+      CREATE_TIME = #{record.createTime,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -207,7 +208,7 @@
         UNIT = #{unit,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
-        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+        CREATE_TIME = #{createTime,jdbcType=VARCHAR},
       </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
@@ -217,7 +218,7 @@
     set SENSOR_NUM = #{sensorNum,jdbcType=VARCHAR},
       NUM = #{num,jdbcType=VARCHAR},
       UNIT = #{unit,jdbcType=VARCHAR},
-      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+      CREATE_TIME = #{createTime,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

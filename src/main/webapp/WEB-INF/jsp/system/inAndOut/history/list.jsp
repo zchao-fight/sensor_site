@@ -42,7 +42,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                         <span>
-                       厂房列表
+                       历史进出记录
                    </span>
                     <div class="btn-group pull-right" style="margin-top: -5px;">
                         <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-sign-in"></i> 导入
@@ -51,40 +51,28 @@
                                 class="btn btn-primary btn-sm"><i class="fa fa-sign-out"></i> 导出
                         </button>
                         <button type="button" class="btn btn-primary btn-sm"
-                                onclick="addWorkshop()"><i class="fa fa-plus"></i> 添加
+                                onclick="refresh()"><i class="fa fa-plus"></i> 刷新
                         </button>
                     </div>
                 </div>
                 <table class="table table-bordered table-striped table-hover" id="sysUser">
                     <thead>
                     <tr>
-                        <th>名称</th>
-                        <th>编号</th>
-                        <th>位置</th>
-                        <th>定员</th>
-                        <th>人数</th>
-                        <th>ip</th>
-                        <th>操作</th>
+                        <th>厂房编号</th>
+                        <th>工作证号</th>
+                        <th>人员姓名</th>
+                        <th>进入时间</th>
+                        <th>离开时间</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${workshops}" var="workshop">
+                    <c:forEach items="${list}" var="history">
                         <tr>
-                            <td>${workshop.name}</td>
-                            <td>${workshop.workshopNumber}</td>
-                            <td>${workshop.location}</td>
-                            <td>${workshop.personnelQuota}</td>
-                            <td>${workshop.numInWorkshop}</td>
-                            <td>${workshop.ip}</td>
-                            <td>
-                                <button class="btn btn-primary btn-xs" onclick="editWorkshop('${workshop.id}')">编辑
-                                </button>
-                                <button class="btn btn-danger btn-xs" onclick="deleteWorkshop('${workshop.id}')">删除
-                                </button>
-                                <button class="btn btn-danger btn-xs"
-                                        onclick="clearCount('${workshop.workshopNumber}')">清零
-                                </button>
-                            </td>
+                            <td>${history.workshopId}</td>
+                            <td>${history.workId}</td>
+                            <td>${history.name}</td>
+                            <td>${history.entryTime}</td>
+                            <td>${history.departureTime}</td>
                         </tr>
                     </c:forEach>
                     </tbody>
@@ -128,63 +116,8 @@
     });
 
 
-</script>
-
-<script>
-
-    function clearCount(id) {
-
-        $.ajax({
-            type: "post",
-            url: "${ctx}/workshop/clearCount.action",
-            dataType: "json",
-            data: {
-                workshopNumber: id
-            },
-            statusCode: {
-                200: function () {
-                    alert("清零成功");
-                    window.location.href = window.location.href;
-                },
-                500: function () {
-                    alert("清零失败");
-                }
-            }
-        });
-    }
-
-    function deleteWorkshop(id) {
-        sensor.get("${ctx}/workshop/deleteWorkshop.action?id=" + id, function () {
-            setTimeout(function () {
-                window.location.reload();
-            }, 2000);
-            sensor.succMsg("删除成功");
-        }, function () {
-            sensor.errorMsg("删除失败");
-        });
-    }
-
-
-    function editWorkshop(id) {
-        //iframe层-禁滚动条
-        layer.open({
-            type: 2,
-            title: '编辑厂房',
-            area: ['500px', '520px'],
-            skin: 'layui-layer-rim', //加上边框
-            content: '${ctx}/workshop/editWorkshopUI.action?id=' + id
-        });
-    }
-
-    function addWorkshop() {
-        //iframe层-禁滚动条
-        layer.open({
-            type: 2,
-            title: '添加用户',
-            area: ['50%', '580px'],
-            skin: 'layui-layer-rim', //加上边框
-            content: '${ctx}/workshop/addWorkshopUI.action'
-        });
+    function refresh() {
+        window.location.reload();
     }
 </script>
 

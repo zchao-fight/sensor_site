@@ -1,16 +1,17 @@
 package cn.ccf.pojo;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class DustHistoryExample {
+public class ProximityHistoryExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public DustHistoryExample() {
+    public ProximityHistoryExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -394,6 +395,55 @@ public class DustHistoryExample {
             return (Criteria) this;
         }
 
+        public Criteria andCreateTimeEqualTo(Date value) {
+            addCriterion("CREATE_TIME =", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotEqualTo(Date value) {
+            addCriterion("CREATE_TIME <>", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeGreaterThan(Date value) {
+            addCriterion("CREATE_TIME >", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("CREATE_TIME >=", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeLessThan(Date value) {
+            addCriterion("CREATE_TIME <", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeLessThanOrEqualTo(Date value) {
+            addCriterion("CREATE_TIME <=", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeIn(List<Date> values) {
+            addCriterion("CREATE_TIME in", values, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotIn(List<Date> values) {
+            addCriterion("CREATE_TIME not in", values, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeBetween(Date value1, Date value2) {
+            addCriterion("CREATE_TIME between", value1, value2, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotBetween(Date value1, Date value2) {
+            addCriterion("CREATE_TIME not between", value1, value2, "createTime");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

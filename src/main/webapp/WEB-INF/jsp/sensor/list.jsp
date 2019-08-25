@@ -6,7 +6,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<head>
     <meta http-equiv="content-type" content="text/html" charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,6 +17,7 @@
     <script src="${ctx}/js/bootstrap.min.js"></script>
     <script src="${ctx}/js/jquery.ztree.all.min.js"></script>
     <script src="${ctx}/js/layer/layer.js"></script>
+    <script src="${ctx}/js/sensor.js"></script>
     <!--[if lt IE 9]>
     <script src="${ctx}/js/jquery/ie/html5shiv.js"></script>
     <script src="${ctx}/js/jquery/ie/respond.min.js"></script>
@@ -87,7 +87,7 @@
                             <td>${item.sensorNumber}</td>
                             <td>${item.serialNumber}</td>
                             <td>${item.location}</td>
-                            <td><c:if test="${item.status eq 0}"> 正常</c:if><c:if test="${item.status eq 1}"> 损坏</c:if></td>
+                            <td><c:if test="${item.status eq 1}"> 正常</c:if><c:if test="${item.status eq 0}"> 损坏</c:if></td>
                             <td><c:if test="${item.isUpload eq 0}"> 否</c:if><c:if test="${item.isUpload eq 1}"> 是</c:if></td>
                             <c:if test="${sessionScope.userInfo.role == 1}">
                             <td>
@@ -107,23 +107,12 @@
 
 <script>
     function deleteSensor(id) {
-        $.ajax({
-            type : "post",
-            url : "${ctx}/sensor/deleteSensor.action",
-            dataType : "json",
-            data : {
-                id : id
-            },
-            statusCode : {
-                200 : function () {
-                    layer.msg("删除成功", {icon : 6}, function () {
-                        location.reload();
-                    })
-                },
-                500 : function () {
-                    layer.msg("删除成功", {icon : 5});
-                }
-            }
+
+        sensor.get("${ctx}/sensor/deleteSensor.action?id="+id, function () {
+            setTimeout(function () {
+                window.location.reload();
+            }, 2000);
+            sensor.succMsg("删除成功");
         });
     }
 

@@ -11,6 +11,7 @@
     <script type="text/javascript" src="${ctx}/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="${ctx}/js/layer/layer.js"></script>
     <script type="text/javascript" src="${ctx}/js/common.js"></script>
+    <script type="text/javascript" src="${ctx}/js/sensor.js"></script>
     <link rel="stylesheet" href="${ctx}/css/bootstrap.min.css">
     <style type="text/css">
         .col-sm-3 {
@@ -96,7 +97,7 @@
             </div>
         </div>
         <footer class="panel-footer text-right bg-light lter">
-            <button type="submit" class="btn btn-success btn-s-xs" onclick="addUser()">提交</button>
+            <button type="button" class="btn btn-success btn-s-xs" onclick="addUser()">提交</button>
         </footer>
     </section>
 </form>
@@ -104,24 +105,12 @@
 
     function addUser() {
 
-        $.ajax({
-            type : "post",
-            url : "${ctx}/user/addUser.action",
-            data : $("#form").serialize(),
-            statusCode : {
-                201 : function () {
-                    alert("添加成功");
-
-                },
-                500 : function () {
-                    alert("添加失败");
-                }
-            }
+        sensor.post("${ctx}/user/addUser.action",$("#form").serialize(),function () {
+           setTimeout(function () {
+               window.parent.location.reload();
+           }, 2000);
+           sensor.succMsg("添加成功")
         });
-        var layerIndex = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-        parent.layer.close(layerIndex); //再执行关闭
-        window.parent.location.href = window.parent.location.href;
-
     }
 
 

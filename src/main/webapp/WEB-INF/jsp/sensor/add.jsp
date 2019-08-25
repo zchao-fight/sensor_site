@@ -116,10 +116,6 @@
 
 
     function addUser() {
-
-//        var layerIndex = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-//        parent.layer.close(layerIndex); //再执行关闭
-//        window.parent.location.href = window.parent.location.href;
             var formObject = {};
             var formArray =$("#form").serializeArray();
             $.each(formArray,function(i,item){
@@ -133,27 +129,6 @@
             },2000);
             sensor.succMsg('保存成功!')
         });
-
-        <%--$.ajax({--%>
-            <%--type: "post",--%>
-            <%--ajax: false,--%>
-            <%--url: "${ctx}/sensor/addSensor.action",--%>
-            <%--data: $("#form").serialize(),--%>
-            <%--statusCode: {--%>
-                <%--201: function () {--%>
-                    <%--layer.msg("添加成功", {time: 2300, icon:6, shade: [0.2, '#000'],shadeClose :true}, function () {--%>
-                        <%--window.parent.location.href = window.parent.location.href;--%>
-
-                    <%--});--%>
-                <%--},--%>
-                <%--200: function (data) {--%>
-                    <%--parent.layer.msg(data.msg, {icon: 6})--%>
-                <%--},--%>
-                <%--500: function () {--%>
-                    <%--alert("添加失败");--%>
-                <%--}--%>
-            <%--}--%>
-        <%--});--%>
     }
 
 

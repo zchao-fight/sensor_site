@@ -90,7 +90,7 @@
                     <a class="waves-effect" href="javascript:modifyPassword()"><i class="zmdi zmdi-settings"></i> 修改密码</a>
                 </li>
                 <li>
-                    <a class="waves-effect" href="${ctx}/user/logout.action;"><i class="zmdi zmdi-run"></i> 退出登录</a>
+                    <a class="waves-effect" href="${ctx}/user/logout.action"><i class="zmdi zmdi-run"></i> 退出登录</a>
                 </li>
             </ul>
         </div>
@@ -132,8 +132,9 @@
                 <ul>
                     <li><a class="waves-effect"
                            href="javascript:Tab.addTab('用户管理', '${ctx}/user/list.action');">用户管理</a></li>
-                    <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('厂房管理', '${ctx}/workshop/list.action');">厂房管理</a></li>
+                    <li><a class="waves-effect" href="javascript:Tab.addTab('厂房管理', '${ctx}/workshop/list.action');">厂房管理</a></li>
+                    <li><a class="waves-effect" href="javascript:Tab.addTab('实时进出记录', '${ctx}/inAndOut/realtime/list.action');">实时进出记录</a></li>
+                    <li><a class="waves-effect" href="javascript:Tab.addTab('历史进出记录', '${ctx}/inAndOut/history/list.action');">历史进出记录</a></li>
                     <%--<li><a class="waves-effect" href="javascript:Tab.addTab('权限管理', '${ctx}/permission/list.action');">权限管理</a></li>--%>
                 </ul>
             </li>

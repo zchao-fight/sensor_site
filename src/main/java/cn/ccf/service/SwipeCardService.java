@@ -36,7 +36,6 @@ public class SwipeCardService {
             return numInWorkshops.get(0);
         }
         return null;
-
     }
 
     @Transactional

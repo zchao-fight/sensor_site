@@ -50,10 +50,7 @@ public class UserInfoService {
         example1.createCriteria().andUsernameEqualTo(username);
         List<UserInfo> userInfos1 = userInfoMapper.selectByExample(example1);
 
-        if (CollectionUtils.isEmpty(userInfos) && CollectionUtils.isEmpty(userInfos1)) {
-            return true;
-        }
-        return false;
+        return CollectionUtils.isEmpty(userInfos) && CollectionUtils.isEmpty(userInfos1);
     }
 
     public UserInfo queryUserById(String id) {

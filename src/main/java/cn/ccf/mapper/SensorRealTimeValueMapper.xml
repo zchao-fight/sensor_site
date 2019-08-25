@@ -7,7 +7,7 @@
     <result column="SENSOR_TYPE" property="sensorType" jdbcType="VARCHAR" />
     <result column="NUM" property="num" jdbcType="VARCHAR" />
     <result column="UNIT" property="unit" jdbcType="VARCHAR" />
-    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -105,7 +105,7 @@
       NUM, UNIT, UPDATE_TIME
       )
     values (#{id,jdbcType=VARCHAR}, #{sensorId,jdbcType=VARCHAR}, #{sensorType,jdbcType=VARCHAR}, 
-      #{num,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}
+      #{num,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="cn.ccf.pojo.SensorRealTimeValue" >
@@ -147,7 +147,7 @@
         #{unit,jdbcType=VARCHAR},
       </if>
       <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -176,7 +176,7 @@
         UNIT = #{record.unit,jdbcType=VARCHAR},
       </if>
       <if test="record.updateTime != null" >
-        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+        UPDATE_TIME = #{record.updateTime,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -190,7 +190,7 @@
       SENSOR_TYPE = #{record.sensorType,jdbcType=VARCHAR},
       NUM = #{record.num,jdbcType=VARCHAR},
       UNIT = #{record.unit,jdbcType=VARCHAR},
-      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}
+      UPDATE_TIME = #{record.updateTime,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -211,7 +211,7 @@
         UNIT = #{unit,jdbcType=VARCHAR},
       </if>
       <if test="updateTime != null" >
-        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+        UPDATE_TIME = #{updateTime,jdbcType=VARCHAR},
       </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
@@ -222,7 +222,7 @@
       SENSOR_TYPE = #{sensorType,jdbcType=VARCHAR},
       NUM = #{num,jdbcType=VARCHAR},
       UNIT = #{unit,jdbcType=VARCHAR},
-      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+      UPDATE_TIME = #{updateTime,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

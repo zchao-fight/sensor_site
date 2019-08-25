@@ -4,11 +4,14 @@ import cn.ccf.common.ResponseCodeConst;
 import cn.ccf.common.ResponseDTO;
 import cn.ccf.pojo.SensorRealTimeValue;
 import cn.ccf.service.RealTimeSensorDataService;
+import cn.ccf.service.SensorService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("api")
@@ -26,6 +29,32 @@ public class RealTimeSensorDataController {
     @RequestMapping(value = "saveGas", method = RequestMethod.POST)
     public ResponseDTO<Void> saveGas(SensorRealTimeValue sensorRealTimeValue) {
         return saveSensorRealTimeData(sensorRealTimeValue);
+    }
+
+    @RequestMapping(value = "saveProximity", method = RequestMethod.POST)
+    public ResponseDTO<Void> saveProximity(SensorRealTimeValue sensorRealTimeValue) {
+        return saveProximityRealTimeData(sensorRealTimeValue);
+    }
+
+    private ResponseDTO<Void> saveProximityRealTimeData(SensorRealTimeValue sensorRealTimeValue) {
+        String[] sensorIds = sensorRealTimeValue.getSensorId().split(",");
+        String[] units = sensorRealTimeValue.getUnit().split(",");
+        String[] nums = sensorRealTimeValue.getNum().split(",");
+
+
+        for (int i = 0; i < sensorIds.length; i++) {
+
+            SensorRealTimeValue temp = new SensorRealTimeValue();
+            temp.setUnit(units[i]);
+            temp.setSensorType("proximity");
+            temp.setSensorId(sensorIds[i]);
+            temp.setNum(nums[i]);
+            saveSensorRealTimeData(temp);
+        }
+
+
+
+        return ResponseDTO.succ();
     }
 
     @RequestMapping(value = "saveDust", method = RequestMethod.POST)

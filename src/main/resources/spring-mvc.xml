@@ -94,8 +94,11 @@
     </bean>
 
 
-    <!-- 	<mvc:interceptors>
-           <bean class="cn.ccf.interceptor.SessionInterceptor" />
-       </mvc:interceptors>-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="cn.ccf.interceptor.CrossDomainInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
 </beans>

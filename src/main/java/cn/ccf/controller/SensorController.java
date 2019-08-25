@@ -5,8 +5,6 @@ import cn.ccf.common.ResponseDTO;
 import cn.ccf.pojo.Sensor;
 import cn.ccf.service.SensorService;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,14 +57,9 @@ public class SensorController {
 
     @RequestMapping("/sensor/deleteSensor")
     @ResponseBody
-    public ResponseEntity<Void> deleteSensor(String id) {
-
-        try {
-            sensorService.deleteSensor(id);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-        return ResponseEntity.status(HttpStatus.OK).build();
+    public ResponseDTO<Boolean> deleteSensor(String id) {
+        sensorService.deleteSensor(id);
+        return ResponseDTO.succ(true);
     }
 
     @RequestMapping("/sensor/editSensorUI")

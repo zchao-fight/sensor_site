@@ -1,5 +1,7 @@
 package cn.ccf.controller;
 
+import cn.ccf.common.ResponseCodeConst;
+import cn.ccf.common.ResponseDTO;
 import cn.ccf.common.TCPClient;
 import cn.ccf.mapper.CurrentInAndOutMapper;
 import cn.ccf.mapper.NumInWorkshopMapper;
@@ -12,12 +14,14 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
@@ -47,25 +51,15 @@ public class WorkshopController {
 
     @RequestMapping(value = "addWorkshop", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<Void> addWorkshop(Workshop workshop) {
-
-        if (workshop.getIp() == null || workshop.getWorkshopNumber() == null) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-
-        try {
+    public ResponseDTO<Boolean> addWorkshop(@Valid Workshop workshop) {
             workshop.setCreatetime(new Date());
             workshop.setId(UUID.randomUUID().toString().replace("-", ""));
             Integer result = workshopMapper.insert(workshop);
             if (result == 1) {
-                return ResponseEntity.status(HttpStatus.CREATED).build();
+                return ResponseDTO.succ(true);
             } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+                return ResponseDTO.wrap(ResponseCodeConst.ERROR_PARAM);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
 
@@ -89,14 +83,14 @@ public class WorkshopController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @RequestMapping(value = "deleteWorkshop", method = RequestMethod.POST)
+    @GetMapping(value = "deleteWorkshop")
     @ResponseBody
-    public ResponseEntity<Void> deleteWorkshop(String id) {
+    public ResponseDTO<Boolean> deleteWorkshop(String id) {
         Integer result = workshopMapper.deleteByPrimaryKey(id);
         if (result == 1) {
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return ResponseDTO.succ(true);
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        return ResponseDTO.wrap(ResponseCodeConst.ERROR_PARAM);
     }
 
     @RequestMapping(value = "list")
@@ -122,6 +116,7 @@ public class WorkshopController {
     }
 
     @RequestMapping(value = "getQuota", method = RequestMethod.POST)
+    @ResponseBody
     public ResponseEntity<Integer> getQuota(String workshopNumber) {
         WorkshopExample example = new WorkshopExample();
         example.createCriteria().andWorkshopNumberEqualTo(workshopNumber);

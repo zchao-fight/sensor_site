@@ -1,7 +1,15 @@
 package cn.ccf.pojo;
 
+import javafx.scene.chart.ValueAxis;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 
+/**
+ * @author charles
+ */
 public class UserInfo {
     private BigDecimal id;
 
@@ -17,10 +25,13 @@ public class UserInfo {
 
     private String workId;
 
+    @NotBlank(message = "卡号不能为空")
     private String echoWorkId;
 
+    @NotBlank(message = "用户名不能为空")
     private String username;
 
+    @Length(min = 3, max = 18, message = "密码长度在3字符到18字符之间")
     private String password;
 
     private String role;

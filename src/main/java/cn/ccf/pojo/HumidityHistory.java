@@ -11,7 +11,7 @@ public class HumidityHistory {
 
     private String unit;
 
-    private Date createTime;
+    private String createTime;
 
     public String getId() {
         return id;
@@ -45,11 +45,11 @@ public class HumidityHistory {
         this.unit = unit == null ? null : unit.trim();
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 }

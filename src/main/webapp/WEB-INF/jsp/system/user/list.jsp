@@ -17,6 +17,8 @@
     <script src="${ctx}/js/bootstrap.min.js"></script>
     <script src="${ctx}/js/jquery.ztree.all.min.js"></script>
     <script src="${ctx}/js/layer/layer.js"></script>
+    <script type="text/javascript" src="${ctx}/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="${ctx}/js/sensor.js"></script>
     <script src="${ctx}/js/jquery.dataTables.min.js"></script>
     <!--[if lt IE 9]>
     <script src="${ctx}/js/jquery/ie/html5shiv.js"></script>
@@ -37,52 +39,52 @@
 <body>
 <div class="container-fluid">
     <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
                         <span>
                        用户列表
                    </span>
-                        <div class="btn-group pull-right" style="margin-top: -5px;">
-                            <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-sign-in"></i> 导入
-                            </button>
-                            <button type="button" data-toggle="modal" data-target="#zqdlModal"
-                                    class="btn btn-primary btn-sm"><i class="fa fa-sign-out"></i> 导出
-                            </button>
-                            <button type="button" class="btn btn-primary btn-sm"
-                                    onclick="addUser()"><i class="fa fa-plus"></i> 添加
-                            </button>
-                        </div>
+                    <div class="btn-group pull-right" style="margin-top: -5px;">
+                        <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-sign-in"></i> 导入
+                        </button>
+                        <button type="button" data-toggle="modal" data-target="#zqdlModal"
+                                class="btn btn-primary btn-sm"><i class="fa fa-sign-out"></i> 导出
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm"
+                                onclick="addUser()"><i class="fa fa-plus"></i> 添加
+                        </button>
                     </div>
-                    <table class="table table-bordered table-striped table-hover" id="sysUser">
-                        <thead>
-                        <tr>
-                            <th>用户名</th>
-                            <th>姓名</th>
-                            <th>单位</th>
-                            <th>部门</th>
-                            <th>卡号</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach items="${userInfos}" var="sysUser">
-                            <tr>
-                                <td>${sysUser.username}</td>
-                                <td>${sysUser.name}</td>
-                                <td>${sysUser.orgName}</td>
-                                <td>${sysUser.depName}</td>
-                                <td>${sysUser.echoWorkId}</td>
-                                <td>
-                                    <button class="btn btn-primary btn-xs" onclick="editUser(${sysUser.id})">编辑</button>
-                                    <button class="btn btn-danger btn-xs" onclick="deleteUser(${sysUser.id})">删除</button>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
                 </div>
+                <table class="table table-bordered table-striped table-hover" id="sysUser">
+                    <thead>
+                    <tr>
+                        <th>用户名</th>
+                        <th>姓名</th>
+                        <th>单位</th>
+                        <th>部门</th>
+                        <th>卡号</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${userInfos}" var="sysUser">
+                        <tr>
+                            <td>${sysUser.username}</td>
+                            <td>${sysUser.name}</td>
+                            <td>${sysUser.orgName}</td>
+                            <td>${sysUser.depName}</td>
+                            <td>${sysUser.echoWorkId}</td>
+                            <td>
+                                <button class="btn btn-primary btn-xs" onclick="editUser(${sysUser.id})">编辑</button>
+                                <button class="btn btn-danger btn-xs" onclick="deleteUser(${sysUser.id})">删除</button>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
             </div>
+        </div>
     </div>
 </div>
 <script>
@@ -124,39 +126,26 @@
 
 <script>
 
-  function deleteUser(id) {
-
-      $.ajax({
-          type : "post",
-          url : "${ctx}/user/deleteUser.action",
-          dataType : "json",
-          data : {
-              id : id
-          },
-          statusCode : {
-              200 : function () {
-                  alert("删除成功");
-              },
-              500 : function () {
-                  alert("删除失败");
-              }
-          }
-      });
-      window.location.href = window.location.href;
-  }
+    function deleteUser(id) {
+        sensor.get("${ctx}/user/deleteUser.action?id=" + id, function () {
+            setTimeout(function () {
+                window.location.reload();
+            }, 2000);
+            sensor.succMsg("删除成功");
+        });
+    }
 
 
-
-  function editUser(id) {
-      //iframe层-禁滚动条
-      layer.open({
-          type: 2,
-          title: '查看传感器',
-          area: ['500px', '520px'],
-          skin: 'layui-layer-rim', //加上边框
-          content: '${ctx}/user/editUserUI.action?id='+id
-      });
-  }
+    function editUser(id) {
+        //iframe层-禁滚动条
+        layer.open({
+            type: 2,
+            title: '查看传感器',
+            area: ['500px', '520px'],
+            skin: 'layui-layer-rim', //加上边框
+            content: '${ctx}/user/editUserUI.action?id=' + id
+        });
+    }
 
     function addUser() {
         //iframe层-禁滚动条

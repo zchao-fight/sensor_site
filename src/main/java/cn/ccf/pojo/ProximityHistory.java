@@ -2,7 +2,7 @@ package cn.ccf.pojo;
 
 import java.util.Date;
 
-public class LaserRangeHistory {
+public class ProximityHistory {
     private String id;
 
     private String sensorNum;

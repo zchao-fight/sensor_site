@@ -1,5 +1,7 @@
 package cn.ccf.controller;
 
+import cn.ccf.common.ResponseCodeConst;
+import cn.ccf.common.ResponseDTO;
 import cn.ccf.common.constants.SessionConst;
 import cn.ccf.pojo.UserInfo;
 import cn.ccf.service.UserInfoService;
@@ -10,10 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -68,28 +72,24 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "deleteUser", method = RequestMethod.POST)
+    @RequestMapping(value = "deleteUser", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<Void> deleteUser(Integer id) {
-        Integer result = userInfoService.deleteUser(id);
-        if (result == 1) {
-            return ResponseEntity.status(HttpStatus.OK).build();
-        }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    public ResponseDTO<Boolean> deleteUser(@RequestParam("id") int id) {
+        userInfoService.deleteUser(id);
+        return ResponseDTO.succ(true);
     }
 
     @RequestMapping(value = "addUser", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<Void> addUser(UserInfo userInfo) {
+    public ResponseDTO<Boolean> addUser(@Valid UserInfo userInfo) {
 
         if (userInfo.getUsername() != null && userInfo.getEchoWorkId() != null) {
             boolean flag = userInfoService.queryUserInfoByUsernameAndEchoWorkId(userInfo.getUsername(), userInfo.getEchoWorkId());
             if (!flag) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+                return ResponseDTO.wrap(ResponseCodeConst.SYSTEM_ERROR);
             }
         }
 
-        try {
             String password = new SimpleHash("MD5", userInfo.getPassword(), salt, 1).toString();
             String echoWorkId = userInfo.getEchoWorkId();
             if (echoWorkId != null) {
@@ -98,14 +98,10 @@ public class UserController {
             userInfo.setPassword(password);
             Integer result = userInfoService.inserUser(userInfo);
             if (result == 1) {
-                return ResponseEntity.status(HttpStatus.CREATED).build();
+                return ResponseDTO.succ(true);
             } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+                return ResponseDTO.wrap(ResponseCodeConst.SYSTEM_ERROR);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @RequestMapping("login")
@@ -120,7 +116,7 @@ public class UserController {
         if (userInfo != null) {
             if (StringUtils.equals(passwordMd5, userInfo.getPassword())) {
                 request.getSession().setAttribute(SessionConst.SESSION_NAME, userInfo);
-                request.getSession().setMaxInactiveInterval(60 * 60);
+                request.getSession().setMaxInactiveInterval(60 * 60 * 60);
                 return "redirect:/index.action";
             }
         }
@@ -138,7 +134,7 @@ public class UserController {
     }
 
 
-    @RequestMapping("/logout")
+    @RequestMapping("logout")
     public String logout(HttpServletRequest request) {
         request.getSession().invalidate();
         return "redirect:/user/login.action";
