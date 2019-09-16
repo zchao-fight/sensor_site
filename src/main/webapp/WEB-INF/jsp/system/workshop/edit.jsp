@@ -92,7 +92,7 @@
             </div>
 
             <footer class="panel-footer text-right bg-light lter">
-                <button type="submit" class="btn btn-success btn-s-xs" onclick="editWorkshop()">提交</button>
+                <div  class="btn btn-success btn-s-xs" onclick="editWorkshop()">提交</div>
             </footer>
         </div>
     </section>
@@ -108,16 +108,16 @@
             statusCode: {
                 200: function () {
                     alert("修改成功");
-
+                    parent.window.location.reload();
                 },
                 500: function () {
                     alert("修改失败");
                 }
             }
         });
-        var layerIndex = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+      /*  var layerIndex = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
         parent.layer.close(layerIndex); //再执行关闭
-        window.parent.location.href = window.parent.location.href;
+        window.location.reload();*/
     }
 
 </script>

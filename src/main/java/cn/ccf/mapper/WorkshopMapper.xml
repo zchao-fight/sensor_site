@@ -6,7 +6,7 @@
     <result column="WORKSHOP_NUMBER" property="workshopNumber" jdbcType="VARCHAR" />
     <result column="NAME" property="name" jdbcType="VARCHAR" />
     <result column="LOCATION" property="location" jdbcType="VARCHAR" />
-    <result column="CREATETIME" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="CREATETIME" property="createtime" jdbcType="VARCHAR" />
     <result column="IP" property="ip" jdbcType="VARCHAR" />
     <result column="PERSONNEL_QUOTA" property="personnelQuota" jdbcType="DECIMAL" />
   </resultMap>
@@ -106,7 +106,7 @@
       LOCATION, CREATETIME, IP, 
       PERSONNEL_QUOTA)
     values (#{id,jdbcType=VARCHAR}, #{workshopNumber,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{location,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{ip,jdbcType=VARCHAR}, 
+      #{location,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR},
       #{personnelQuota,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="cn.ccf.pojo.Workshop" >
@@ -148,7 +148,7 @@
         #{location,jdbcType=VARCHAR},
       </if>
       <if test="createtime != null" >
-        #{createtime,jdbcType=TIMESTAMP},
+        #{createtime,jdbcType=VARCHAR},
       </if>
       <if test="ip != null" >
         #{ip,jdbcType=VARCHAR},
@@ -180,7 +180,7 @@
         LOCATION = #{record.location,jdbcType=VARCHAR},
       </if>
       <if test="record.createtime != null" >
-        CREATETIME = #{record.createtime,jdbcType=TIMESTAMP},
+        CREATETIME = #{record.createtime,jdbcType=VARCHAR},
       </if>
       <if test="record.ip != null" >
         IP = #{record.ip,jdbcType=VARCHAR},
@@ -199,7 +199,7 @@
       WORKSHOP_NUMBER = #{record.workshopNumber,jdbcType=VARCHAR},
       NAME = #{record.name,jdbcType=VARCHAR},
       LOCATION = #{record.location,jdbcType=VARCHAR},
-      CREATETIME = #{record.createtime,jdbcType=TIMESTAMP},
+      CREATETIME = #{record.createtime,jdbcType=VARCHAR},
       IP = #{record.ip,jdbcType=VARCHAR},
       PERSONNEL_QUOTA = #{record.personnelQuota,jdbcType=DECIMAL}
     <if test="_parameter != null" >
@@ -219,7 +219,7 @@
         LOCATION = #{location,jdbcType=VARCHAR},
       </if>
       <if test="createtime != null" >
-        CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+        CREATETIME = #{createtime,jdbcType=VARCHAR},
       </if>
       <if test="ip != null" >
         IP = #{ip,jdbcType=VARCHAR},
@@ -235,7 +235,7 @@
     set WORKSHOP_NUMBER = #{workshopNumber,jdbcType=VARCHAR},
       NAME = #{name,jdbcType=VARCHAR},
       LOCATION = #{location,jdbcType=VARCHAR},
-      CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      CREATETIME = #{createtime,jdbcType=VARCHAR},
       IP = #{ip,jdbcType=VARCHAR},
       PERSONNEL_QUOTA = #{personnelQuota,jdbcType=DECIMAL}
     where ID = #{id,jdbcType=VARCHAR}

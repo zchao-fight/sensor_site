@@ -12,6 +12,8 @@
     <script type="text/javascript" src="${ctx}/js/layer/layer.js"></script>
     <script type="text/javascript" src="${ctx}/js/common.js"></script>
     <script type="text/javascript" src="${ctx}/js/sensor.js"></script>
+    <script type="text/javascript" src="${ctx}/js/jquery.validate.js"></script>
+    <script type="text/javascript" src="${ctx}/js/messages_zh.js"></script>
     <link rel="stylesheet" href="${ctx}/css/bootstrap.min.css">
     <style type="text/css">
         .col-sm-3 {
@@ -46,7 +48,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">真实姓名</label>
+                <label class="col-sm-3 control-label">真实姓名<span style="color: red"> *</span></label>
                 <div class="col-sm-9">
                     <input type="text" class="form-control checkacc"
                            placeholder="请输入姓名" name="name" id="name">
@@ -97,14 +99,13 @@
             </div>
         </div>
         <footer class="panel-footer text-right bg-light lter">
-            <button type="button" class="btn btn-success btn-s-xs" onclick="addUser()">提交</button>
+            <button type="submit" class="btn btn-success btn-s-xs" onclick="addUser()">提交</button>
         </footer>
     </section>
 </form>
 <script type="text/javascript">
 
     function addUser() {
-
         sensor.post("${ctx}/user/addUser.action",$("#form").serialize(),function () {
            setTimeout(function () {
                window.parent.location.reload();
@@ -112,6 +113,15 @@
            sensor.succMsg("添加成功")
         });
     }
+
+    $(function () {
+        $("#form").validate({
+            rules: {
+                username : "required",
+                name : "required",
+            }
+        })
+    })
 
 
 </script>

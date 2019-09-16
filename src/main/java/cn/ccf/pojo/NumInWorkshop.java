@@ -3,8 +3,10 @@ package cn.ccf.pojo;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
+/**
+ * @author charles
+ */
 @Data
 public class NumInWorkshop {
     private String id;
@@ -13,6 +15,6 @@ public class NumInWorkshop {
 
     private BigDecimal num;
 
-    private Date createTime;
+    private String createTime;
 
 }

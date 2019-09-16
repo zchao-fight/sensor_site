@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 public class UserInfo {
     private BigDecimal id;
 
+    @NotBlank(message = "真实姓名不能为空")
     private String name;
 
     private String orgId;

@@ -22,7 +22,7 @@ public class Workshop {
 
     private String location;
 
-    private Date createtime;
+    private String createtime;
 
     @NotBlank(message = "厂房IP不得为空")
     private String ip;

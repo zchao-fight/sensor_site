@@ -5,7 +5,7 @@
     <id column="ID" property="id" jdbcType="VARCHAR" />
     <result column="WORKSHOP_ID" property="workshopId" jdbcType="VARCHAR" />
     <result column="NUM" property="num" jdbcType="DECIMAL" />
-    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -102,7 +102,7 @@
     insert into NUM_IN_WORKSHOP (ID, WORKSHOP_ID, NUM, 
       CREATE_TIME)
     values (#{id,jdbcType=VARCHAR}, #{workshopId,jdbcType=VARCHAR}, #{num,jdbcType=DECIMAL}, 
-      #{createTime,jdbcType=TIMESTAMP})
+      #{createTime,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.ccf.pojo.NumInWorkshop" >
     insert into NUM_IN_WORKSHOP
@@ -131,7 +131,7 @@
         #{num,jdbcType=DECIMAL},
       </if>
       <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
+        #{createTime,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -154,7 +154,7 @@
         NUM = #{record.num,jdbcType=DECIMAL},
       </if>
       <if test="record.createTime != null" >
-        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+        CREATE_TIME = #{record.createTime,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -166,7 +166,7 @@
     set ID = #{record.id,jdbcType=VARCHAR},
       WORKSHOP_ID = #{record.workshopId,jdbcType=VARCHAR},
       NUM = #{record.num,jdbcType=DECIMAL},
-      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP}
+      CREATE_TIME = #{record.createTime,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -181,7 +181,7 @@
         NUM = #{num,jdbcType=DECIMAL},
       </if>
       <if test="createTime != null" >
-        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+        CREATE_TIME = #{createTime,jdbcType=VARCHAR},
       </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
@@ -190,7 +190,7 @@
     update NUM_IN_WORKSHOP
     set WORKSHOP_ID = #{workshopId,jdbcType=VARCHAR},
       NUM = #{num,jdbcType=DECIMAL},
-      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+      CREATE_TIME = #{createTime,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

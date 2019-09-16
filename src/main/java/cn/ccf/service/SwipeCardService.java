@@ -1,7 +1,5 @@
 package cn.ccf.service;
 
-import cn.ccf.common.ResponseCodeConst;
-import cn.ccf.common.ResponseDTO;
 import cn.ccf.mapper.CurrentInAndOutMapper;
 import cn.ccf.mapper.InAndOutHistoryMapper;
 import cn.ccf.mapper.NumInWorkshopMapper;
@@ -12,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -38,7 +37,7 @@ public class SwipeCardService {
         return null;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void insertSwipeInMsg(SwipeVO swipeVO) {
 
         String uuid = UUID.randomUUID().toString().replace("-", "");
@@ -49,7 +48,8 @@ public class SwipeCardService {
         // 插入到历史进出记录
         InAndOutHistory historyIn = new InAndOutHistory();
         historyIn.setId(uuid);
-        historyIn.setEntryTime(new Date());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        historyIn.setEntryTime(sdf.format(new Date()));
         historyIn.setWorkshopId(workshopId);
         historyIn.setWorkId(workId);
         historyIn.setName(name);
@@ -73,16 +73,16 @@ public class SwipeCardService {
             numInWorkshop.setId(uuid);
             numInWorkshop.setWorkshopId(workshopId);
             numInWorkshop.setNum(new BigDecimal(num));
-            numInWorkshop.setCreateTime(new Date());
+            numInWorkshop.setCreateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
             numInWorkshopMapper.insert(numInWorkshop);
         } else {
             numInWorkshop.setNum(new BigDecimal(num));
-            numInWorkshop.setCreateTime(new Date());
+            numInWorkshop.setCreateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
             numInWorkshopMapper.updateByPrimaryKey(numInWorkshop);
         }
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void insertSwipeOutMsg(SwipeVO swipeVO, String id) {
         String workId = swipeVO.getWorkId();
         // 删除实时进出记录
@@ -93,13 +93,14 @@ public class SwipeCardService {
         // 更新进出历史记录离开厂房时间
         InAndOutHistory outHistory = new InAndOutHistory();
         outHistory.setId(id); // 实时进出id 和 历史进出id 一致
-        outHistory.setDepartureTime(new Date());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        outHistory.setDepartureTime(sdf.format(new Date()));
         inAndOutHistoryMapper.updateByPrimaryKeySelective(outHistory);
 
         // 更新离开之后厂房人数
         NumInWorkshop numInWorkshop = queryNumInWorkshopByWorkshopId(swipeVO.getWorkshopId());
         numInWorkshop.setNum(new BigDecimal(swipeVO.getNum()));
-        numInWorkshop.setCreateTime(new Date());
+        numInWorkshop.setCreateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         numInWorkshopMapper.updateByPrimaryKey(numInWorkshop);
     }
 }

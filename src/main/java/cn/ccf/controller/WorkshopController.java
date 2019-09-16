@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -52,7 +53,7 @@ public class WorkshopController {
     @RequestMapping(value = "addWorkshop", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO<Boolean> addWorkshop(@Valid Workshop workshop) {
-            workshop.setCreatetime(new Date());
+            workshop.setCreatetime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
             workshop.setId(UUID.randomUUID().toString().replace("-", ""));
             Integer result = workshopMapper.insert(workshop);
             if (result == 1) {

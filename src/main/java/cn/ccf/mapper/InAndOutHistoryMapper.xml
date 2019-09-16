@@ -6,8 +6,8 @@
     <result column="WORKSHOP_ID" property="workshopId" jdbcType="VARCHAR" />
     <result column="WORK_ID" property="workId" jdbcType="VARCHAR" />
     <result column="NAME" property="name" jdbcType="VARCHAR" />
-    <result column="ENTRY_TIME" property="entryTime" jdbcType="TIMESTAMP" />
-    <result column="DEPARTURE_TIME" property="departureTime" jdbcType="TIMESTAMP" />
+    <result column="ENTRY_TIME" property="entryTime" jdbcType="VARCHAR" />
+    <result column="DEPARTURE_TIME" property="departureTime" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -105,7 +105,7 @@
       NAME, ENTRY_TIME, DEPARTURE_TIME
       )
     values (#{id,jdbcType=VARCHAR}, #{workshopId,jdbcType=VARCHAR}, #{workId,jdbcType=VARCHAR}, 
-      #{name,jdbcType=VARCHAR}, #{entryTime,jdbcType=TIMESTAMP}, #{departureTime,jdbcType=TIMESTAMP}
+      #{name,jdbcType=VARCHAR}, #{entryTime,jdbcType=VARCHAR}, #{departureTime,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="cn.ccf.pojo.InAndOutHistory" >
@@ -144,10 +144,10 @@
         #{name,jdbcType=VARCHAR},
       </if>
       <if test="entryTime != null" >
-        #{entryTime,jdbcType=TIMESTAMP},
+        #{entryTime,jdbcType=VARCHAR},
       </if>
       <if test="departureTime != null" >
-        #{departureTime,jdbcType=TIMESTAMP},
+        #{departureTime,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -173,10 +173,10 @@
         NAME = #{record.name,jdbcType=VARCHAR},
       </if>
       <if test="record.entryTime != null" >
-        ENTRY_TIME = #{record.entryTime,jdbcType=TIMESTAMP},
+        ENTRY_TIME = #{record.entryTime,jdbcType=VARCHAR},
       </if>
       <if test="record.departureTime != null" >
-        DEPARTURE_TIME = #{record.departureTime,jdbcType=TIMESTAMP},
+        DEPARTURE_TIME = #{record.departureTime,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -189,8 +189,8 @@
       WORKSHOP_ID = #{record.workshopId,jdbcType=VARCHAR},
       WORK_ID = #{record.workId,jdbcType=VARCHAR},
       NAME = #{record.name,jdbcType=VARCHAR},
-      ENTRY_TIME = #{record.entryTime,jdbcType=TIMESTAMP},
-      DEPARTURE_TIME = #{record.departureTime,jdbcType=TIMESTAMP}
+      ENTRY_TIME = #{record.entryTime,jdbcType=VARCHAR},
+      DEPARTURE_TIME = #{record.departureTime,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -208,10 +208,10 @@
         NAME = #{name,jdbcType=VARCHAR},
       </if>
       <if test="entryTime != null" >
-        ENTRY_TIME = #{entryTime,jdbcType=TIMESTAMP},
+        ENTRY_TIME = #{entryTime,jdbcType=VARCHAR},
       </if>
       <if test="departureTime != null" >
-        DEPARTURE_TIME = #{departureTime,jdbcType=TIMESTAMP},
+        DEPARTURE_TIME = #{departureTime,jdbcType=VARCHAR},
       </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
@@ -221,8 +221,8 @@
     set WORKSHOP_ID = #{workshopId,jdbcType=VARCHAR},
       WORK_ID = #{workId,jdbcType=VARCHAR},
       NAME = #{name,jdbcType=VARCHAR},
-      ENTRY_TIME = #{entryTime,jdbcType=TIMESTAMP},
-      DEPARTURE_TIME = #{departureTime,jdbcType=TIMESTAMP}
+      ENTRY_TIME = #{entryTime,jdbcType=VARCHAR},
+      DEPARTURE_TIME = #{departureTime,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>
