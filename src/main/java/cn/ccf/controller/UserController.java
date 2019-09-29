@@ -44,7 +44,8 @@ public class UserController {
     public ResponseEntity<Void> modifyPassword(HttpServletRequest request, String password) {
         try {
             UserInfo userInfo = (UserInfo) request.getSession().getAttribute(SessionConst.SESSION_NAME);
-            userInfo.setPassword(new SimpleHash("MD5", password, salt, 1).toString());
+//            userInfo.setPassword(new SimpleHash("MD5", password, salt, 1).toString());
+            userInfo.setPassword(password);
             userInfoService.updateSelective(userInfo);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -90,18 +91,20 @@ public class UserController {
             }
         }
 
-            String password = new SimpleHash("MD5", userInfo.getPassword(), salt, 1).toString();
-            String echoWorkId = userInfo.getEchoWorkId();
-            if (echoWorkId != null) {
-                userInfo.setWorkId(String.valueOf(Long.parseLong(echoWorkId)));
-            }
-            userInfo.setPassword(password);
-            Integer result = userInfoService.inserUser(userInfo);
-            if (result == 1) {
-                return ResponseDTO.succ(true);
-            } else {
-                return ResponseDTO.wrap(ResponseCodeConst.SYSTEM_ERROR);
-            }
+        /** 暂时不加密
+         String password = new SimpleHash("MD5", userInfo.getPassword(), salt, 1).toString();
+         userInfo.setPassword(password);
+         **/
+        String echoWorkId = userInfo.getEchoWorkId();
+        if (echoWorkId != null) {
+            userInfo.setWorkId(String.valueOf(Long.parseLong(echoWorkId)));
+        }
+        Integer result = userInfoService.inserUser(userInfo);
+        if (result == 1) {
+            return ResponseDTO.succ(true);
+        } else {
+            return ResponseDTO.wrap(ResponseCodeConst.SYSTEM_ERROR);
+        }
     }
 
     @RequestMapping("login")
@@ -111,10 +114,10 @@ public class UserController {
 
     @RequestMapping("handleLogin")
     public String login(HttpServletRequest request, String username, String password) {
-        String passwordMd5 = new SimpleHash("MD5", password, salt, 1).toString();
+//        String passwordMd5 = new SimpleHash("MD5", password, salt, 1).toString();
         UserInfo userInfo = userInfoService.queryUserInfoByUsername(username);
         if (userInfo != null) {
-            if (StringUtils.equals(passwordMd5, userInfo.getPassword())) {
+            if (StringUtils.equals(password, userInfo.getPassword())) {
                 request.getSession().setAttribute(SessionConst.SESSION_NAME, userInfo);
                 request.getSession().setMaxInactiveInterval(60 * 60 * 60);
                 return "redirect:/index.action";

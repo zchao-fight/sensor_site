@@ -127,11 +127,13 @@
 <script>
 
     function deleteUser(id) {
-        sensor.get("${ctx}/user/deleteUser.action?id=" + id, function () {
-            setTimeout(function () {
-                window.location.reload();
-            }, 2000);
-            sensor.succMsg("删除成功");
+        layer.confirm("确定删除吗？", {btn: ['确定','取消']}, function () {
+            sensor.get("${ctx}/user/deleteUser.action?id=" + id, function () {
+                setTimeout(function () {
+                    window.location.reload();
+                }, 2000);
+                sensor.succMsg("删除成功");
+            });
         });
     }
 

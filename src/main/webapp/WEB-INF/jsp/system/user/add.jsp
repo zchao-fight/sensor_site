@@ -99,7 +99,7 @@
             </div>
         </div>
         <footer class="panel-footer text-right bg-light lter">
-            <button type="submit" class="btn btn-success btn-s-xs" onclick="addUser()">提交</button>
+            <button type="button" class="btn btn-success btn-s-xs" onclick="addUser()">提交</button>
         </footer>
     </section>
 </form>

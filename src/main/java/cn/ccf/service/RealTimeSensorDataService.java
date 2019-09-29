@@ -6,6 +6,7 @@ import cn.ccf.pojo.SensorRealTimeValueExample;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,6 +22,15 @@ public class RealTimeSensorDataService {
 
     @Resource
     private SensorRealTimeValueMapper sensorRealTimeValueMapper;
+
+    /**
+     *  程序启动删除实时数据
+     */
+    @PostConstruct
+    public void init() {
+        SensorRealTimeValueExample example = new SensorRealTimeValueExample();
+        sensorRealTimeValueMapper.deleteByExample(example);
+    }
 
     @Transactional(rollbackFor = Exception.class)
     public int insertSensorRealTimeData(SensorRealTimeValue currentValue) {

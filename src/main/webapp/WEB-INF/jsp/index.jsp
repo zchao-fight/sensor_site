@@ -115,6 +115,8 @@
                            href="javascript:Tab.addTab('可燃气体', '${ctx}/sensor/index.action?type=gas');">可燃气体</a></li>
                     <li><a class="waves-effect" href="javascript:Tab.addTab('接地电阻', '${ctx}/sensor/index.action?type=resistance');">接地电阻</a>
                     </li>
+                    <li><a class="waves-effect" href="javascript:Tab.addTab('接地电阻', '${ctx}/sensor/index.action?type=proximity');">接近传感器</a>
+                    </li>
                 </ul>
             </li>
             <c:if test="${sessionScope.userInfo.role == 1}">

@@ -154,13 +154,15 @@
     }
 
     function deleteWorkshop(id) {
-        sensor.get("${ctx}/workshop/deleteWorkshop.action?id=" + id, function () {
-            setTimeout(function () {
-                window.location.reload();
-            }, 2000);
-            sensor.succMsg("删除成功");
-        }, function () {
-            sensor.errorMsg("删除失败");
+        layer.confirm("确定删除吗？", {btn: ['确定','取消']}, function () {
+            sensor.get("${ctx}/workshop/deleteWorkshop.action?id=" + id, function () {
+                setTimeout(function () {
+                    window.location.reload();
+                }, 2000);
+                sensor.succMsg("删除成功");
+            }, function () {
+                sensor.errorMsg("删除失败");
+            });
         });
     }
 
