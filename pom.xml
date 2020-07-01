@@ -30,7 +30,7 @@
         <!--日期版本-->
         <joda.version>2.9.9</joda.version>
         <!--调度器版本-->
-        <quartz.version>2.3.0</quartz.version>
+        <quartz.version>2.3.2</quartz.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
